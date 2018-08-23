@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="MyCustomView">
-        <attr name="piv_shape_color" format="color"/>
+        <attr name="piv_shape_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="ArtIndicator">
+        <attr name="mi_radius_selected" format="dimension" />
+        <attr name="mi_radius_unselected" format="dimension" />
+
+        <attr name="mi_color_selected" format="color" />
+        <attr name="mi_color_unselected" format="color" />
+
+        <attr name="mi_distance_dot" format="dimension"/>
     </declare-styleable>
 </resources>

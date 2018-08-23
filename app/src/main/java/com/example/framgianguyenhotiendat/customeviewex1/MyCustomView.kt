@@ -10,23 +10,17 @@ import android.util.AttributeSet
 import android.view.View
 import java.util.*
 
-class MyCustomView constructor(context: Context) : View(context) {
+class MyCustomView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0)
+    : View(context, attrs, defStyleAttr, defStyleRes) {
 
     private lateinit var rect: Rect
     private lateinit var paint: Paint
 
-    constructor(context: Context, @Nullable attrs: AttributeSet) : this(context) {
+    var padding: Int = 0
+
+    init {
         init(attrs)
     }
-
-    constructor(context: Context, @Nullable attrs: AttributeSet, defStyleAttr: Int) : this(context) {
-        init(attrs)
-    }
-
-    constructor(context: Context, @Nullable attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : this(context) {
-        init(attrs)
-    }
-
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -44,10 +38,10 @@ class MyCustomView constructor(context: Context) : View(context) {
         super.onDraw(canvas)
         canvas?.run {
             drawRect(rect.apply {
-                left = 0
-                top = 0
-                right = 100
-                bottom = 100
+                left = 50
+                top = 50
+                right = width - padding
+                bottom = height - padding
             }, paint)
         }
     }
@@ -76,11 +70,13 @@ class MyCustomView constructor(context: Context) : View(context) {
         postInvalidate()
     }
 
-    fun upPadding(padding : Int) {
-
+    fun upPadding(padding: Int) {
+        this@MyCustomView.padding += padding
+        postInvalidate()
     }
 
     fun downPadding(padding: Int) {
-
+        this@MyCustomView.padding -= padding
+        postInvalidate()
     }
 }

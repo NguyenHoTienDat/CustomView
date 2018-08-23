@@ -9,10 +9,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        button_down_padding.setOnClickListener {  }
-        button_up_padding.setOnClickListener { }
-
-        val view: MyCustomView = findViewById(R.id.view_custom)
-        button_swap_color.setOnClickListener { view.swapColor() }
+        button_down_padding.setOnClickListener { view_custom.downPadding(100) }
+        button_up_padding.setOnClickListener { view_custom.upPadding(100) }
+        button_swap_color.setOnClickListener { view_custom.swapColor() }
     }
 }
