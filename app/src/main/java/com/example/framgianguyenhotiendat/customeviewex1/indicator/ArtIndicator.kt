@@ -45,36 +45,8 @@ class ArtIndicator constructor(context: Context, attrs: AttributeSet)
 
     private var dots = mutableListOf<Dot>()
 
-    /**
-     * Fun in view lifecycle
-     * Here, view is calculated done
-     */
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
-        var yCenter = height / 2
-        var dis = dotDistance + 2 * radiusUnSelected
-
-        var firstXCenter = (getWidth() / 2) - ((dots.size - 1) * dis / 2)
-
-        for ((pos, dot) in dots.withIndex()) {
-            dot.apply {
-                Log.d("xxxx", "run $pos")
-                currentRadius = if (pos == currentDotSelected) radiusSelected else radiusUnSelected
-
-//                setCenterPointCoordinator(if (pos == 0) firstXCenter.toFloat()
-//                else (firstXCenter + dis * pos).toFloat(), yCenter.toFloat())
-
-                setCenterPointCoordinator((20 * pos + 50).toFloat(),yCenter.toFloat())
-                setDotAlpha(if (pos == currentDotSelected) 255 else radiusUnSelected * 255 / radiusSelected)
-                setDotColor(if (pos == currentDotSelected) colorSelected else colorUnSelected)
-            }
-        }
-        invalidate()
-    }
-
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
         var designHeight = 2 * radiusSelected
 
         var widthSize = MeasureSpec.getSize(widthMeasureSpec)
@@ -93,6 +65,30 @@ class ArtIndicator constructor(context: Context, attrs: AttributeSet)
                     else -> designHeight
                 }
         )
+    }
+
+    /**
+     * Fun in view lifecycle
+     * Here, view is calculated done
+     */
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        var yCenter = height / 2
+        var dis = dotDistance + 2 * radiusUnSelected
+
+        var firstXCenter = (width / 2) - ((dots.size - 1) * dis / 2)
+
+        for ((pos, dot) in dots.withIndex()) {
+            dot.apply {
+                currentRadius = if (pos == currentDotSelected) radiusSelected else radiusUnSelected
+
+                setCenterPointCoordinator(if (pos == 0) firstXCenter.toFloat()
+                else (firstXCenter + dis * pos).toFloat(), yCenter.toFloat())
+
+                setDotAlpha(if (pos == currentDotSelected) 255 else radiusUnSelected * 255 / radiusSelected)
+                setDotColor(if (pos == currentDotSelected) colorSelected else colorUnSelected)
+            }
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -114,25 +110,25 @@ class ArtIndicator constructor(context: Context, attrs: AttributeSet)
 
     override fun onPageSelected(p0: Int) {
         previousDotSelected = currentDotSelected
-        colorUnSelected = p0
+        currentDotSelected = p0
+        invalidate()
+        //case swipe back
+        if (currentDotSelected == previousDotSelected) previousDotSelected = currentDotSelected++
 
-//        //case swipe back
-//        if (currentDotSelected == previousDotSelected) previousDotSelected = currentDotSelected++
-//
-//        AnimatorSet().apply {
-//            duration = animateDuration.toLong()
-//
-//            animatorZoomIn = ValueAnimator.ofInt(radiusUnSelected, radiusSelected).apply {
-//                addUpdateListener { it -> changeRadius(currentDotSelected, if (it.animatedValue is Int) it.animatedValue as Int else null) }
-//            }
-//
-//            animatorZoomOut = ValueAnimator.ofInt(radiusSelected, radiusUnSelected).apply {
-//                addUpdateListener { it -> changeRadius(previousDotSelected, if (it.animatedValue is Int) it.animatedValue as Int else null) }
-//            }
-//
-//            play(animatorZoomIn).with(animatorZoomOut)
-//            start()
-//        }
+        AnimatorSet().apply {
+            duration = animateDuration.toLong()
+
+            animatorZoomIn = ValueAnimator.ofInt(radiusUnSelected, radiusSelected).apply {
+                addUpdateListener { it -> changeRadius(currentDotSelected, if (it.animatedValue is Int) it.animatedValue as Int else null) }
+            }
+
+            animatorZoomOut = ValueAnimator.ofInt(radiusSelected, radiusUnSelected).apply {
+                addUpdateListener { it -> changeRadius(previousDotSelected, if (it.animatedValue is Int) it.animatedValue as Int else null) }
+            }
+
+            play(animatorZoomIn).with(animatorZoomOut)
+            start()
+        }
     }
 
     private fun changeRadius(dotSelectedPos: Int, newRadius: Int?) {

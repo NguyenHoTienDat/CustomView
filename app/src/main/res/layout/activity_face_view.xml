@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".emotion.viewimpl.FaceViewActivity">
+
+    <com.example.framgianguyenhotiendat.customeviewex1.emotion.EmotionalFaceView
+        android:id="@+id/happyButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        app:borderColor="@android:color/white"
+        app:eyesColor="@android:color/white"
+        app:faceColor="@android:color/holo_red_dark"
+        app:mouthColor="@android:color/white"
+        app:state="happy" />
+
+    <com.example.framgianguyenhotiendat.customeviewex1.emotion.EmotionalFaceView
+        android:id="@+id/sadButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        app:borderColor="@android:color/black"
+        app:eyesColor="@android:color/black"
+        app:faceColor="@android:color/darker_gray"
+        app:mouthColor="@android:color/black"
+        app:state="sad" />
+</RelativeLayout>
